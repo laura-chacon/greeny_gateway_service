@@ -8,5 +8,6 @@ class create_user(object):
             headers={"Content-Type": "application/json",
                      "Accept": "application/json"}
         )
-        req.context['result'] = r.content
+        token = json.loads(r.content)['token']
+        req.context['result'] = {'token': token}
         resp.status = falcon.HTTP_200

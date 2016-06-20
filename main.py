@@ -1,7 +1,13 @@
 import falcon
 import json
-from controllers.get_users import get_users
-from controllers.create_user import create_user
+from controllers.users_controller import UsersController
+from controllers.user_controller import UserController
+from controllers.get_next_action_id import GetNextActionIdController
+from controllers.get_action_history import GetActionHistoryController
+from controllers.create_action import CreateActionController
+from controllers.validate_password import ValidatePassword
+from controllers.validate_token import ValidateToken
+from controllers.facts_controller import FactsController
 
 class RequireJSON(object):
     def process_request(self, req, resp):
@@ -37,13 +43,22 @@ class JSONTranslator(object):
             return
         resp.body = json.dumps(req.context['result'])
 
+def add_routes(api):
+    api.add_route('/users', UsersController())
+    api.add_route('/users/{uid}', UserController())
+    api.add_route('/users/{uid}/actions/next_id', GetNextActionIdController())
+    api.add_route('/users/{uid}/actions/{action_id}', CreateActionController())
+    api.add_route('/users/{uid}/history', GetActionHistoryController())
+    api.add_route('/users/{uid}/validate_password', ValidatePassword())
+    api.add_route('/users/{uid}/validate_token', ValidateToken())
+    api.add_route('/facts', FactsController())
 
-api = application = falcon.API(middleware=[
-    RequireJSON(),
-    JSONTranslator(),
-])
-gateway_service_get_users = get_users()
-gateway_service_create_user = create_user()
+def create_api():
+    api = falcon.API(middleware=[
+        RequireJSON(),
+        JSONTranslator(),
+    ])
+    add_routes(api)
+    return api
 
-api.add_route('/users', gateway_service_get_users)
-api.add_route('/users/{uid}', gateway_service_create_user)
+api = create_api()
