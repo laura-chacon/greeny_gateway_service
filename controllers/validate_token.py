@@ -11,4 +11,5 @@ class ValidateToken(object):
                      "Accept": "application/json",
                      "Token": token}
             )
-        resp.status = r.status_code
+        field_name = "HTTP_" + str(r.status_code)
+        resp.status = getattr(falcon, field_name)      
