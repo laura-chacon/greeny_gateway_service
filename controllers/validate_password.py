@@ -8,6 +8,7 @@ class ValidatePassword(object):
             headers={"Content-Type": "application/json",
                      "Accept": "application/json"}
         )
-        req.context['result'] = r.content
+        body = json.loads(r.content)
+        req.context['result'] = body
         field_name = "HTTP_" + str(r.status_code)
         resp.status = getattr(falcon, field_name)

@@ -3,7 +3,6 @@ import json
 
 class GetActionHistoryController(object):
     def on_get(self, req, resp, uid):
-        print 2222
         r = requests.get(
             "http://127.0.0.1:8002/users/"+ str(uid) + "/validate_token",
             headers={"Content-Type": "application/json",

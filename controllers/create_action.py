@@ -7,14 +7,17 @@ class CreateActionController(object):
             headers={"Content-Type": "application/json",
                      "Accept": "application/json",
                      "Token": req.get_header('Token')}
-            )
+        )
         if r.status_code == requests.codes.ok:
             r = requests.put(
                 "http://127.0.0.1:8001/users/"+ str(uid) + "/actions/" + str(action_id),
-            data=json.dumps(req.context['body']),
-            headers={"Content-Type": "application/json",
-                     "Accept": "application/json"}
+                data=json.dumps(req.context['body']),
+                headers={"Content-Type": "application/json",
+                         "Accept": "application/json"}
             )
+            body = json.loads(r.content)
+            req.context['result'] = body
             resp.status = falcon.HTTP_200
         else:
-            resp.status = faclon.HTTP_401
+            req.context['result'] = {}
+            resp.status = falcon.HTTP_401

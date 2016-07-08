@@ -8,6 +8,8 @@ from controllers.create_action import CreateActionController
 from controllers.validate_password import ValidatePassword
 from controllers.validate_token import ValidateToken
 from controllers.facts_controller import FactsController
+from controllers.sections_controller import SectionsController
+from controllers.actions_types_controller import ActionTypesController
 
 class RequireJSON(object):
     def process_request(self, req, resp):
@@ -52,6 +54,8 @@ def add_routes(api):
     api.add_route('/users/{uid}/validate_password', ValidatePassword())
     api.add_route('/users/{uid}/validate_token', ValidateToken())
     api.add_route('/facts', FactsController())
+    api.add_route('/sections', SectionsController())
+    api.add_route('/sections/{section}/actions', ActionTypesController())
 
 def create_api():
     api = falcon.API(middleware=[

@@ -1,10 +1,10 @@
 import falcon, requests
 import json
 
-class FactsController(object):
+class SectionsController(object):
     def on_get(self, req, resp):
         r = requests.get(
-            "http://127.0.0.1:8003/facts",
+            "http://127.0.0.1:8004/sections",
             headers={"Content-Type": "application/json",
                      "Accept": "application/json"}
         )
